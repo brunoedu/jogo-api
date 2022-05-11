@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-mongoose.connect('mongodb+srv://andre_soares:senha123@jogo-api.zvqcw.mongodb.net/jogo-api');
+mongoose.connect(process.env.DB_URL);
 
 let db = mongoose.connection;
 export default db;

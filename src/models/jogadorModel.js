@@ -1,8 +1,7 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const jogadorSchema = new mongoose.Schema(
     {
-        id: {type: String},
         name: {type:String, required:true},
         coins: {type:Number, required:true}
     },
@@ -12,4 +11,4 @@ const jogadorSchema = new mongoose.Schema(
 );
 
 const jogadores = mongoose.model("jogadores", jogadorSchema);
-export default jogadores;
+module.exports = jogadores;

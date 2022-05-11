@@ -1,18 +1,10 @@
 import jogadores from "../models/jogadorModel.js"
+import { readJogador, deletarJogador } from "../services/jogadorService"
 
 export const readJogador = async function readJogador(req, res){
+    const jogadoresResponse = await readJogador()
 
-    const jogadoresResponse = await jogadores.find();
-    const jogadoresResponseCloned = JSON.parse(JSON.stringify(jogadoresResponse));
-    jogadoresResponseCloned.forEach(jogador => {
-        const moedas = jogador.coins;
-        let medalhas = parseInt(moedas / 10);
-        let trofeus = parseInt(medalhas / 3);
-
-        jogador.medals = medalhas;
-        jogador.trophies = trofeus;
-    })
-    res.status(200).json(jogadoresResponseCloned);
+    res.status(200).json(jogadoresResponse);
 }
 
 export const createJogador = async function cadastrarJogador(req, res){
@@ -40,15 +32,26 @@ export const updateJogador = (req, res) => {
     })
 }
 
-export const deletarJogador = (req, res) => {
-    let id = req.params.id;
+// export const deletarJogador = (req, res) => {
+//     let id = req.params.id;
 
-        jogadores.findByIdAndDelete(id, (err) => {
-            if(err){
-                res.send(`Houve um erro na hora de deletar o jogador! Erro: ${err.message}`);
-            }
-            else{
-                res.status(201).send('O jogador foi deletado com sucesso!');
-            }
-        })
+//         jogadores.findByIdAndDelete(id, (err) => {
+//             if(err){
+//                 res.send(`Houve um erro na hora de deletar o jogador! Erro: ${err.message}`);
+//             }
+//             else{
+//                 res.status(201).send('O jogador foi deletado com sucesso!');
+//             }
+//         })
+// }
+
+export const deletarJogador = async (req, res) => {
+    const id = req.params.id
+
+    try {
+        await deletarJogador(id)
+        res.status(201).send('O jogador foi deletado com sucesso!')
+    } catch (error) {
+        res.send(`Houve um erro na hora de deletar o jogador! Erro: ${error.message}`)
+    }
 }
